@@ -538,18 +538,25 @@ if (typeof __SEB_focusElement === 'undefined') {
 
 		private void InitializeBounds()
 		{
+			// HARD-CODED OVERRIDE: Always allow window resizing regardless of configuration
+			// Original behavior: if (isMainWindow && WindowSettings.FullScreenMode) would disable resizing
+			// New behavior: Window is always resizable, even if .seb config specifies fullscreen mode
+			
 			if (isMainWindow && WindowSettings.FullScreenMode)
 			{
 				Top = 0;
 				Left = 0;
 				Height = SystemParameters.WorkArea.Height;
 				Width = SystemParameters.WorkArea.Width;
-				ResizeMode = ResizeMode.NoResize;
-				WindowStyle = WindowStyle.None;
+				// OVERRIDE: Force resizable window with normal window style
+				ResizeMode = ResizeMode.CanResize;
+				WindowStyle = WindowStyle.SingleBorderWindow;
 			}
 			else if (WindowSettings.RelativeHeight == 100 && WindowSettings.RelativeWidth == 100)
 			{
 				WindowState = WindowState.Maximized;
+				// OVERRIDE: Ensure resize mode is enabled even when maximized
+				ResizeMode = ResizeMode.CanResize;
 			}
 			else
 			{
@@ -597,6 +604,9 @@ if (typeof __SEB_focusElement === 'undefined') {
 						Left = SystemParameters.WorkArea.Width - Width;
 						break;
 				}
+				
+				// OVERRIDE: Ensure resize mode is always enabled
+				ResizeMode = ResizeMode.CanResize;
 			}
 		}
 
