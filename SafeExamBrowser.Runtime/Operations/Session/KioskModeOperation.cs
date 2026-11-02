@@ -42,7 +42,9 @@ namespace SafeExamBrowser.Runtime.Operations.Session
 
 		public override OperationResult Perform()
 		{
-			Logger.Info($"Initializing kiosk mode '{Context.Next.Settings.Security.KioskMode}'...");
+			// OVERRIDE: Force kiosk mode to None to allow multitasking
+			Logger.Info($"Kiosk mode override: ignoring configured mode '{Context.Next.Settings.Security.KioskMode}', forcing 'None'...");
+			Context.Next.Settings.Security.KioskMode = KioskMode.None;
 			StatusChanged?.Invoke(TextKey.OperationStatus_InitializeKioskMode);
 
 			activeMode = Context.Next.Settings.Security.KioskMode;
@@ -62,6 +64,8 @@ namespace SafeExamBrowser.Runtime.Operations.Session
 
 		public override OperationResult Repeat()
 		{
+			// OVERRIDE: Force kiosk mode to None to allow multitasking
+			Context.Next.Settings.Security.KioskMode = KioskMode.None;
 			var newMode = Context.Next.Settings.Security.KioskMode;
 
 			if (activeMode == newMode)

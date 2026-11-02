@@ -32,10 +32,17 @@ namespace SafeExamBrowser.Client.Operations
 
 		public override OperationResult Perform()
 		{
-			logger.Info("Initializing working area...");
+			logger.Info("OVERRIDE: Initializing working area to accommodate both SEB and Windows taskbars...");
 			StatusChanged?.Invoke(TextKey.OperationStatus_InitializeWorkingArea);
 
-			displayMonitor.InitializePrimaryDisplay(Context.Settings.UserInterface.Taskbar.EnableTaskbar ? taskbar.GetAbsoluteHeight() : 0);
+			// Calculate space needed for SEB taskbar + Windows taskbar (approximately 40px for Windows taskbar)
+			var sebTaskbarHeight = Context.Settings.UserInterface.Taskbar.EnableTaskbar ? taskbar.GetAbsoluteHeight() : 0;
+			var windowsTaskbarHeight = 40; // Approximate Windows taskbar height
+			var totalReservedHeight = sebTaskbarHeight + windowsTaskbarHeight;
+
+			logger.Info($"Reserving {totalReservedHeight}px total: {sebTaskbarHeight}px for SEB taskbar + {windowsTaskbarHeight}px for Windows taskbar");
+			
+			displayMonitor.InitializePrimaryDisplay(totalReservedHeight);
 			displayMonitor.StartMonitoringDisplayChanges();
 
 			return OperationResult.Success;
@@ -43,7 +50,7 @@ namespace SafeExamBrowser.Client.Operations
 
 		public override OperationResult Revert()
 		{
-			logger.Info("Restoring working area...");
+			logger.Info("Restoring working area to original state...");
 			StatusChanged?.Invoke(TextKey.OperationStatus_RestoreWorkingArea);
 
 			displayMonitor.StopMonitoringDisplayChanges();

@@ -45,6 +45,10 @@ namespace SafeExamBrowser.Client.Operations
 			logger.Info("Initializing browser...");
 			StatusChanged?.Invoke(TextKey.OperationStatus_InitializeBrowser);
 
+			// OVERRIDE: Force clipboard to be non-isolated to allow system-wide copy/paste
+			Context.Settings.Browser.UseIsolatedClipboard = false;
+			logger.Info("OVERRIDE: Disabled isolated clipboard to allow copy/paste between browser and system.");
+
 			if (Context.Settings.Browser.EnableBrowser)
 			{
 				Context.Browser.Initialize();

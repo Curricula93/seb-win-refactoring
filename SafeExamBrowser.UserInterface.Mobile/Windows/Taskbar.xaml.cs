@@ -129,12 +129,16 @@ namespace SafeExamBrowser.UserInterface.Mobile.Windows
 			{
 				Width = SystemParameters.PrimaryScreenWidth;
 				Left = 0;
-				Top = SystemParameters.PrimaryScreenHeight - Height;
+				
+				// OVERRIDE: Position SEB taskbar above Windows taskbar (approximately 40px)
+				const int WINDOWS_TASKBAR_HEIGHT = 40;
+				Top = SystemParameters.PrimaryScreenHeight - Height - WINDOWS_TASKBAR_HEIGHT;
 
 				var position = this.TransformToPhysical(Left, Top);
 				var size = this.TransformToPhysical(Width, Height);
 
 				logger.Debug($"Set taskbar bounds to {Width}x{Height} at ({Left}/{Top}), in physical pixels: {size.X}x{size.Y} at ({position.X}/{position.Y}).");
+				logger.Debug($"Positioned SEB taskbar {WINDOWS_TASKBAR_HEIGHT}px above bottom to accommodate Windows taskbar.");
 			});
 		}
 

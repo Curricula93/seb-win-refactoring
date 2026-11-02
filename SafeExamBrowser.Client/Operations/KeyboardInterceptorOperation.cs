@@ -29,20 +29,18 @@ namespace SafeExamBrowser.Client.Operations
 
 		public override OperationResult Perform()
 		{
-			logger.Info("Starting keyboard interception...");
-			StatusChanged?.Invoke(TextKey.OperationStatus_StartKeyboardInterception);
-
-			keyboardInterceptor.Start();
+			logger.Info("OVERRIDE: Skipping keyboard interception to allow all keyboard shortcuts...");
+			// Original code disabled to allow copy/paste:
+			// keyboardInterceptor.Start();
 
 			return OperationResult.Success;
 		}
 
 		public override OperationResult Revert()
 		{
-			logger.Info("Stopping keyboard interception...");
-			StatusChanged?.Invoke(TextKey.OperationStatus_StopKeyboardInterception);
-
-			keyboardInterceptor.Stop();
+			logger.Info("OVERRIDE: Keyboard interception was never started, skipping stop...");
+			// Original code disabled:
+			// keyboardInterceptor.Stop();
 
 			return OperationResult.Success;
 		}

@@ -99,6 +99,9 @@ namespace SafeExamBrowser.Client.Responsibilities
 
 		private void ShowShell()
 		{
+			// OVERRIDE: Show both SEB taskbar and keep Windows taskbar visible
+			Logger.Info("Showing SEB shell alongside Windows taskbar...");
+			
 			if (Settings.UserInterface.ActionCenter.EnableActionCenter)
 			{
 				actionCenter.Promote();

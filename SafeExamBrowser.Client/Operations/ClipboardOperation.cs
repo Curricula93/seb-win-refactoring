@@ -43,9 +43,11 @@ namespace SafeExamBrowser.Client.Operations
 
 		private void InitializeClipboard()
 		{
-			logger.Info("Initializing clipboard...");
+			logger.Info("OVERRIDE: Forcing clipboard policy to 'Allow' to enable copy/paste...");
 			StatusChanged?.Invoke(TextKey.OperationStatus_InitializeClipboard);
-			clipboard.Initialize(Context.Settings.Security.ClipboardPolicy);
+			
+			// Force clipboard to Allow policy, ignoring config settings
+			clipboard.Initialize(SafeExamBrowser.Settings.Security.ClipboardPolicy.Allow);
 		}
 
 		private void FinalizeClipboard()
